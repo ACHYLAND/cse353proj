@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class program {
@@ -8,6 +7,7 @@ public class program {
             String mode = scan.next();
             System.out.println("Input the file name: ");
             String filename = scan.next();
+
 
             if (mode.equals("train")) {
                 System.out.print("");
