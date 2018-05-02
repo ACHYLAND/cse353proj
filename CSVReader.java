@@ -1,12 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class CSVReader {
-    public ArrayList<Vector> read(String filename) {
+class CSVReader {
+
+    ArrayList<Vector> read(String filename) {
             BufferedReader br;
             String line;
             final String COMMA_DELIMITER = ",";
@@ -16,11 +16,11 @@ public class CSVReader {
                 ArrayList<Vector> vectors = new ArrayList<>();
 
                 while ((line = br.readLine()) != null) {
-                    String[] fvs = (line.split(COMMA_DELIMITER));
+                    String[] fvs = line.split(COMMA_DELIMITER);
                     Vector<Integer> featureVector = new Vector<>(fvs.length);
 
-                    for (int i = 0; i < fvs.length; i++) {
-                        featureVector.set(i, Integer.parseInt(fvs[i]));
+                    for (String s : fvs) {
+                        featureVector.add(Integer.parseInt(s));
                     }
                     vectors.add(featureVector);
 
@@ -29,7 +29,7 @@ public class CSVReader {
                 return vectors;
             }
             catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Unable to read file or file not found.");
             }
 
             return null;

@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class program {
     public static void main(String [] args) {
@@ -8,15 +10,13 @@ public class program {
             System.out.println("Input the file name: ");
             String filename = scan.next();
 
+            CSVReader csvr = new CSVReader();
+            ArrayList<Vector> vectors = csvr.read(filename);
 
-            if (mode.equals("train")) {
-                System.out.print("");
-            }
-            else if (mode.equals("test")) {
-                System.out.print("");
-            }
-            else {
-                System.out.println("Command not recognized.");
+            switch (mode) {
+                case "train": System.out.print("Training the learner... please wait.");
+                case "test": System.out.print("");
+                default: System.out.println("Command not recognized.");
             }
     }
 }
