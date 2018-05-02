@@ -8,6 +8,7 @@ public class program {
             System.out.println("Input the file name: ");
             String filename = scan.next();
 
+
             if (mode.equals("train")) {
                 System.out.print("");
             }
