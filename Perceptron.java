@@ -33,6 +33,13 @@ class Perceptron {
         return w;
     }
 
+
+
+    double[] perceptronTestingAlgorithm(int[][] trainingSample)
+    {
+
+    }
+
     private double innerProduct(double[] w, int[] featureVector) {
         double sum = 0;
         /* Modified so we don't include the result y, just the feature vector */
