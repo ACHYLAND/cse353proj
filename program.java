@@ -7,16 +7,27 @@ public class program {
             Scanner scan = new Scanner(System.in);
             System.out.println("Type 'train' to train and 'test' to test.");
             String mode = scan.next();
+
+            /* Parse the file */
             System.out.println("Input the file name: ");
             String filename = scan.next();
-
             CSVReader csvr = new CSVReader();
-            ArrayList<Vector> vectors = csvr.read(filename);
+            int[][] vectors = csvr.read(filename);
+            while (vectors == null) {
+                System.out.println("Please re-enter the file name.");
+                filename = scan.next();
+                vectors = csvr.read(filename);
+            }
 
-            switch (mode) {
-                case "train": System.out.print("Training the learner... please wait.");
-                case "test": System.out.print("");
-                default: System.out.println("Command not recognized.");
+            if ("train".equals(mode)) {
+                System.out.print("Training the learner... please wait.");
+                System.out.print("");
+                System.out.println("Command not recognized.");
+            } else if ("test".equals(mode)) {
+                System.out.print("");
+                System.out.println("Command not recognized.");
+            } else {
+                System.out.println("Command not recognized.");
             }
     }
 }
