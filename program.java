@@ -20,12 +20,17 @@ public class program {
             }
 
             if ("train".equals(mode)) {
-                System.out.print("Training the learner... please wait.");
-                System.out.print("");
-                System.out.println("Command not recognized.");
+                System.out.println("Training the learner... please wait.");
+                Perceptron p = new Perceptron();
+                System.out.println("Training the modified perceptron...");
+                double[] w = p.perceptronTrainingAlgorithm(vectors);
+                System.out.print("The output weight vector is: [");
+                for (double i : w) {
+                    System.out.print(i + " ");
+                }
+                System.out.print("]");
             } else if ("test".equals(mode)) {
                 System.out.print("");
-                System.out.println("Command not recognized.");
             } else {
                 System.out.println("Command not recognized.");
             }
