@@ -35,24 +35,19 @@ class Perceptron {
 
 
 
-    double perceptronTestingAlgorithm(ArrayList<int[]> testingSample, double[]weightVector)
-    {
+    double perceptronTestingAlgorithm(ArrayList<int[]> testingSample, double[]weightVector) {
         int correctOutput = 0;
         int totalIterations = testingSample.size();
         double result = 0;
-
         //Is the domain incorrect? are we suppose to start with 1? do we set the first element
         // of the testing sample to something?
-        for(int i = 0; i < testingSample.size(); i++)
-        {
+        for(int i = 0; i < testingSample.size(); i++){
             //checks if the output is correct
             int [] temp = testingSample.get(i);
             if ((innerProduct(weightVector, temp) > 0 &&temp[0] > 0)
-                    || (innerProduct(weightVector, temp) < 0 &&temp[0] < 0))
-            {
+                    || (innerProduct(weightVector, temp) < 0 &&temp[0] < 0)){
                 correctOutput++;
             }
-
         }
 
         result = ((double)correctOutput)/((double)totalIterations);
