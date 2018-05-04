@@ -6,14 +6,14 @@ import java.util.Vector;
 
 class CSVReader {
 
-    int[][] read(String filename) {
+    ArrayList<int[]> read(String filename) {
             BufferedReader br;
             String line;
             final String COMMA_DELIMITER = ",";
 
             try {
                 br = new BufferedReader(new FileReader(filename));
-                int[][] vectors = new int[92650][117];
+                ArrayList<int[]> vectors = new ArrayList<int[]>();
 
                 int j = 0;
                 while ((line = br.readLine()) != null) {
@@ -23,7 +23,7 @@ class CSVReader {
                     for (int i = 0; i < fvs.length; i++) {
                         featureVector[i] = Integer.parseInt(fvs[i]);
                     }
-                    vectors[j] =  featureVector;
+                    vectors.add(featureVector);
                     j++;
                 }
 

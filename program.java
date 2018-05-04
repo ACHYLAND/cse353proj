@@ -4,15 +4,22 @@ import java.util.Vector;
 
 public class program {
     public static void main(String [] args) {
-            Scanner scan = new Scanner(System.in);
-            System.out.println("Type 'train' to train and 'test' to test.");
-            String mode = scan.next();
+        Scanner scan = new Scanner(System.in);
+        double[] weightVector = null; // the weightVector for perceptron
+        Perceptron p = new Perceptron(); //Perceptron for
+        ArrayList<int[]> vectors; //ArrayList of the input files
 
+        while (true) {
+            System.out.println("Type 'train' to train, 'test' to test, 'exit' to exit.");
+            String mode = scan.next();
+            if ("exit".equals(mode)) {
+                return;
+            }
             /* Parse the file */
             System.out.println("Input the file name: ");
             String filename = scan.next();
             CSVReader csvr = new CSVReader();
-            int[][] vectors = csvr.read(filename);
+            vectors = csvr.read(filename);
             while (vectors == null) {
                 System.out.println("Please re-enter the file name.");
                 filename = scan.next();
@@ -21,18 +28,22 @@ public class program {
 
             if ("train".equals(mode)) {
                 System.out.println("Training the learner... please wait.");
-                Perceptron p = new Perceptron();
+
                 System.out.println("Training the modified perceptron...");
-                double[] w = p.perceptronTrainingAlgorithm(vectors);
+                weightVector = p.perceptronTrainingAlgorithm(vectors);
                 System.out.print("The output weight vector is: [");
-                for (double i : w) {
+                for (double i : weightVector) {
                     System.out.print(i + " ");
                 }
                 System.out.print("]");
+                System.out.println();
             } else if ("test".equals(mode)) {
-                System.out.print("");
+                System.out.println("Testing the learner... please wait.");
+                double result = p.perceptronTestingAlgorithm(vectors,weightVector);
+                System.out.println("The perceptron accuracy is: " + result);
             } else {
                 System.out.println("Command not recognized.");
             }
+        }
     }
 }
