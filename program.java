@@ -7,7 +7,17 @@ public class program {
         Scanner scan = new Scanner(System.in);
         double[] weightVector = null; // the weightVector for perceptron
         Perceptron p = new Perceptron(); //Perceptron for
+        linearRegression l = new linearRegression();
         ArrayList<int[]> vectors; //ArrayList of the input files
+
+        System.out.println("Type 'p' to use the perceptron classifier or 'l' to use " +
+                "the linear regression model");
+        String model = scan.next();
+        if (!("p".equals(model)||"l".equals(model)))
+        {
+            System.out.println("Unknown learning model");
+            return;
+        }
 
         while (true) {
             System.out.println("Type 'train' to train, 'test' to test, 'exit' to exit.");
@@ -29,9 +39,15 @@ public class program {
             if ("train".equals(mode)) {
                 System.out.println("Training the learner... please wait.");
 
-                System.out.println("Training the modified perceptron...");
-                weightVector = p.perceptronTrainingAlgorithm(vectors);
-                System.out.print("The output weight vector is: [");
+                if ("p".equals(model)) {
+                    System.out.println("Training the modified perceptron...");
+                    weightVector = p.perceptronTrainingAlgorithm(vectors);
+                    System.out.print("The output weight vector is: [");
+                } else if ("l".equals(model)) {
+                    System.out.println("Training the linear regression model...");
+                    weightVector = l.linearRegressionTrainingAlgorithm(vectors);
+                    System.out.print("The output line has coefficients of: [");
+                }
                 for (double i : weightVector) {
                     System.out.print(i + " ");
                 }
@@ -39,7 +55,12 @@ public class program {
                 System.out.println();
             } else if ("test".equals(mode)) {
                 System.out.println("Testing the learner... please wait.");
-                double result = p.perceptronTestingAlgorithm(vectors,weightVector);
+                double result = 0;
+                if ("p".equals(model)) {
+                    result = p.perceptronTestingAlgorithm(vectors, weightVector);
+                } else if ("l".equals(model)) {
+                    result = l.linearRegressionTestingAlgorithm(vectors, weightVector);
+                }
                 System.out.println("The perceptron accuracy is: " + result);
             } else {
                 System.out.println("Command not recognized.");
