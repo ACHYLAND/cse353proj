@@ -8,7 +8,7 @@ public class linearRegression {
         double[] line = new double[trainingSample.get(1).length-1];
         double[] error;
         double minimumError;
-        double precision = 0.0001;
+        double precision = 0.00001;
         double errorPercentDifference = 1;
         double lastError = 0;
         double adjustment = .2;
@@ -62,7 +62,18 @@ public class linearRegression {
                     if(trainingSample.get(i)[j] != 0)
                     {
                         //change the errorVector by how much the line is off
-                        errorVector[j] -= innerProduct(hypothesis, trainingSample.get(i));
+                        errorVector[j] += innerProduct(hypothesis, trainingSample.get(i));
+                        // logithmic error changing
+                        /*
+                        if (innerProduct(hypothesis, trainingSample.get(i))>0)
+                        {
+                            //errorVector[j] -= Math.log(innerProduct(hypothesis, trainingSample.get(i)));
+                            errorVector[j] -= 1;
+                        } else
+                        {
+                           // errorVector[j] += Math.log(Math.abs(innerProduct(hypothesis, trainingSample.get(i))));
+                            errorVector[j] += 1;
+                        }*/
                     }
                 }
             }
