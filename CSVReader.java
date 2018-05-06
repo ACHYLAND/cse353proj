@@ -13,7 +13,7 @@ class CSVReader {
 
             try {
                 br = new BufferedReader(new FileReader(filename));
-                ArrayList<int[]> vectors = new ArrayList<int[]>();
+                ArrayList<int[]> vectors = new ArrayList<>();
 
                 int j = 0;
                 while ((line = br.readLine()) != null) {

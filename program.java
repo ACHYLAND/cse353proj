@@ -6,7 +6,7 @@ public class program {
     public static void main(String [] args) {
         Scanner scan = new Scanner(System.in);
         double[] weightVector = null; // the weightVector for perceptron
-        Perceptron p = new Perceptron(); //Perceptron for
+        Perceptron p = new Perceptron(); // Perceptron
         linearRegression l = new linearRegression();
         ArrayList<int[]> vectors; //ArrayList of the input files
 
@@ -48,8 +48,10 @@ public class program {
                     weightVector = l.linearRegressionTrainingAlgorithm(vectors);
                     System.out.print("The output line has coefficients of: [");
                 }
-                for (double i : weightVector) {
-                    System.out.print(i + " ");
+                if (weightVector != null) {
+                    for (double i : weightVector) {
+                        System.out.print(i + " ");
+                    }
                 }
                 System.out.print("]");
                 System.out.println();
