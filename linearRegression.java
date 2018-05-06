@@ -4,7 +4,7 @@ public class linearRegression {
     //implement the linearRegression algorithm
     public  double[] linearRegressionTrainingAlgorithm(ArrayList<int[]> trainingSample)
     {
-        //let the initial hypothesis be the average the value of each point
+        // Let the initial hypothesis be the average the value of each point
         double[] line = new double[trainingSample.get(1).length-1];
         double[] error;
         double minimumError;
@@ -22,19 +22,17 @@ public class linearRegression {
             line[j]/=trainingSample.size();
         }
         while(errorPercentDifference > precision) {
-            //run the least squares algorithm to find the error and error vector
+            // Run the least squares algorithm to find the error and error vector
             error = leastSquaresAlgorithm(trainingSample, line);
-            //adjust the line based on the error vector
+            // Adjust the line based on the error vector
             for(int i = 1; i < error.length;i++)
-            {
                 line[i] += adjustment * error[i];
-            }
 
 
             //update the adjustment, last error, errorPercentDifference for next iteration
             if (error[0] > lastError)
                 adjustment /= 2;
-            errorPercentDifference = Math.abs(((double)lastError - error[0])/((double)error[0]));
+            errorPercentDifference = Math.abs(lastError - error[0])/(error[0]);
             lastError = error[0];
         }
         return line;
@@ -53,7 +51,7 @@ public class linearRegression {
             //check if the prediction is correct
             if(((innerProduct(hypothesis, trainingSample.get(i))) > 0 && trainingSample.get(i)[0] < 0)
                     ||((innerProduct(hypothesis, trainingSample.get(i))) < 0 && trainingSample.get(i)[0] > 0)
-                    );
+                    )
             {
                 //if it's wrong then alter the error and increment the total error
                 totalError += (innerProduct(hypothesis, trainingSample.get(i)) * (innerProduct(hypothesis, trainingSample.get(i))));
@@ -61,7 +59,7 @@ public class linearRegression {
                 {
                     if(trainingSample.get(i)[j] != 0)
                     {
-                        //change the errorVector by how much the line is off
+                        // Change the errorVector by how much the line is off
                         errorVector[j] -= innerProduct(hypothesis, trainingSample.get(i));
                     }
                 }
@@ -71,7 +69,7 @@ public class linearRegression {
         return errorVector;
     }
 
-    public  double linearRegressionTestingAlgorithm(ArrayList<int[]> testingSample, double[] line)
+    public double linearRegressionTestingAlgorithm(ArrayList<int[]> testingSample, double[] line)
     {
         int correctOutput = 0;
         int totalIterations = testingSample.size();
