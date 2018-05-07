@@ -62,7 +62,7 @@ public class program {
                 } else if ("l".equals(model)) {
                     result = l.linearRegressionTestingAlgorithm(vectors, weightVector);
                 }
-                System.out.println("The perceptron accuracy is: " + result);
+                System.out.println("The accuracy is: " + result);
             } else {
                 System.out.println("Command not recognized.");
             }

@@ -2,6 +2,8 @@ package cse353;
 
 import java.lang.System;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.la4j.Matrices;
 import org.la4j.Matrix;
 import org.la4j.Vector;
@@ -51,12 +53,8 @@ public class linearRegression {
             yArray[i] = trainingSample.get(i)[0];
         }
         Vector y = new BasicVector(yArray);
-
         Vector B = X.multiply(y);
-
         //calculate W A-1b
-
-
         //finding the generalized inverse of A
         EigenDecompositor decomp = new EigenDecompositor(A);
         //w = A+ * b|| A+ = VD+V
@@ -78,11 +76,28 @@ public class linearRegression {
         Matrix AInverse = eigenParts[0].multiply(DInverse).multiply(invert.inverse());
         Vector w = AInverse.multiply(B);
 
-        double[]wArray = new double[trainingSample.get(0).length-1];
-        for(int i = 0; i < wArray.length; i++)
+        double[]wArray = new double[trainingSample.get(0).length];
+        for(int i = 0; i < wArray.length-1; i++)
         {
             wArray[i] = w.get(i);
         }
+
+        //Calculate the bias
+        double yMean= 0;
+        double xMean[] = new double[wArray.length-1];
+        for(int i = 0; i < trainingSample.size();i++) {
+            yMean += trainingSample.get(i)[0];
+            for(int j = 1; j < trainingSample.get(0).length; j++) {
+                xMean[j-1]+=trainingSample.get(i)[j];
+            }
+        }
+        yMean/=((double)trainingSample.size());
+        for(int i = 0; i < trainingSample.get(0).length-1;i++) {
+            xMean[i] /= ((double)trainingSample.size());
+            yMean-=xMean[i]*wArray[i];
+        }
+
+        wArray[wArray.length-1] = yMean;
         return wArray;
     }
 
@@ -119,18 +134,20 @@ public class linearRegression {
         return errorVector;
     }
 
-    public double linearRegressionTestingAlgorithm(ArrayList<int[]> testingSample, double[] w)
+    public double linearRegressionTestingAlgorithm(ArrayList<int[]> testingSample, double[] h)
     {
         int correctOutput = 0;
         int totalIterations = testingSample.size();
         double result = 0;
+        double[] w = Arrays.copyOfRange(h,0,h.length-1);
 
 
         for(int i = 0; i < testingSample.size(); i++){
             //checks if the output is correct
-            int [] temp = testingSample.get(i);
-            if ((innerProduct(w, temp) > 0 &&temp[0] > 0)
-                    || (innerProduct(w, temp) < 0 &&temp[0] < 0)){
+            //remove the label from the feature label
+            int [] temp = Arrays.copyOfRange(testingSample.get(i),1,testingSample.get(i).length);
+            if (((innerProduct(w, temp) + h[h.length-1]) > 0 &&temp[0] > 0)
+                    || ((innerProduct(w, temp)+h[h.length-1]) < 0 &&temp[0] < 0)){
                 correctOutput++;
             }
         }
@@ -149,9 +166,8 @@ public class linearRegression {
 
     private double innerProduct(double[] w, int[] featureVector) {
         double sum = 0;
-        /* Modified so we don't include the result y, just the feature vector */
         for (int i = 0; i < w.length; i++) {
-            sum += w[i] * featureVector[i+1];
+            sum += w[i] * featureVector[i];
         }
         return sum;
     }
