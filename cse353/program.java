@@ -1,6 +1,7 @@
+package cse353;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Vector;
+
 
 public class program {
     public static void main(String [] args) {
@@ -45,7 +46,7 @@ public class program {
                     System.out.print("The output weight vector is: [");
                 } else if ("l".equals(model)) {
                     System.out.println("Training the linear regression model...");
-                    weightVector = l.linearRegressionTrainingAlgorithm(vectors);
+                    weightVector = l.linearRegressionTraining(vectors);
                     System.out.print("The output line has coefficients of: [");
                 }
                 for (double i : weightVector) {

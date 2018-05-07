@@ -1,4 +1,4 @@
-package la4j.src;
+package cse353;
 
 import org.la4j.Matrices;
 import org.la4j.Matrix;
@@ -24,14 +24,7 @@ public class matrixManipulation {
         return product;
     }
 
-    public double [][] matrixInverse (double[][] a)
-    {
-        double[][]inverse = new double [a[0].length][a.length];
-        Matrix c = new Basic2DMatrix(a);
 
-        Matrix b = c.withInverter(Matrices.DEFAULT_INVERTOR);
-        return inverse;
-    }
 
     public double [][] matrixTranspose(double[][] a)
     {
