@@ -1,112 +1,65 @@
 import java.util.ArrayList;
+import java.util.Vector;
 
 class Perceptron {
-    final double ETA = 0.0001;
+    final double BIAS = 5;
 
-    /* Implement the perceptron algorithm
-       Returns the vector of weights
-     */
+    //implement the perceptron algorithm
     double[] perceptronTrainingAlgorithm(ArrayList<int[]> trainingSample) {
         System.out.println("Training sample size is " + trainingSample.size());
 
-        double[] w = new double[trainingSample.get(1).length - 1];
+        /* Initialize w to 0 */
+        double[] w = new double[trainingSample.get(1).length - 1]; // weight vector
+        int[] y = new int[trainingSample.size()]; // vector of results y_i
+
+        for (int i = 0; i < y.length; i++) {
+            y[i] = trainingSample.get(i)[0];
+            trainingSample.get(i)[0] = 1; // First element of vector x is 1 (to account for bias when taking inner product)
+        }
 
         boolean correct = false;
         int n = 0;
-        double[] oldw = new double[w.length];
         while (!correct && n < 100000) {
-            for (int i = 0; i < w.length; i++)
-                oldw[i] = w[i];
-            w = learn(trainingSample, w);
-
-            // Checks for convergence of the algorithm
-            for (int i = 0; i < w.length; i++) {
-                if (w[i] != oldw[i])
-                    break;
-                correct = true;
-            }
-
-            /*
-            System.out.print("This iteration has coefficients of: [");
-            for (double k : w) {
-                System.out.print(k + " ");
-            }*/
-            //System.out.println("]");
-            n++;
+            correct = true;
+            for (int i = 0; i < trainingSample.size(); i++)
+                if (innerProduct(w, trainingSample.get(i)) * y[i] <= 0) {
+                    for (int j = 0; j < w.length; j++)
+                        w[j] += trainingSample.get(i)[j+1] * y[i];
+                        correct = false;
+                        break;
+                }
+             n++;
         }
-
         return w;
     }
 
-    double perceptronTestingAlgorithm(ArrayList<int[]> testingSample, double[] weightVector) {
+
+
+    double perceptronTestingAlgorithm(ArrayList<int[]> testingSample, double[]weightVector) {
         int correctOutput = 0;
         int totalIterations = testingSample.size();
-        double result;
+        double result = 0;
         //Is the domain incorrect? are we suppose to start with 1? do we set the first element
         // of the testing sample to something?
-        for (int[] temp : testingSample) {
+        for(int i = 0; i < testingSample.size(); i++){
             //checks if the output is correct
-            if (modInnerProduct(weightVector, temp) * temp[0] > 0) {
+            int [] temp = testingSample.get(i);
+            if ((innerProduct(weightVector, temp) > 0 &&temp[0] > 0)
+                    || (innerProduct(weightVector, temp) < 0 &&temp[0] < 0)){
                 correctOutput++;
             }
         }
 
-        result = ((double) correctOutput) / (totalIterations);
+        result = ((double)correctOutput)/((double)totalIterations);
         return result;
-    }
-
-    /* Performs one iteration of the perceptron learning algorithm */
-    private double[] learn(ArrayList<int[]> sample, double[] w) {
-        // First element of w is the bias, the others are weights
-        int[] y = new int[sample.size()]; // vector of results y_i
-
-        // Keep track of results
-        for (int i = 0; i < y.length; i++) {
-            y[i] = sample.get(i)[0];
-        }
-
-        // Rewrite to account for bias - added at end of each vector;
-        ArrayList<int[]> trainingSample = new ArrayList<>(sample.size());
-        for (int i = 0; i < sample.size(); i++) {
-            sample.get(i)[sample.get(i).length-1] = 1;
-            trainingSample.add(sample.get(i));
-        }
-
-
-        // Update the weight vector
-        for (int i = 0; i < sample.size(); i++) {
-            double innerProduct = modInnerProduct(w, sample.get(i));
-            // If we have an incorrect output, update the weight vector
-            if (innerProduct * y[i] <= 0) {
-                for (int j = 0; j < w.length; j++) {
-                    w[j] += ETA * y[i] * sample.get(i)[j+1];
-                }
-                return w;
-            }
-        }
-        return w;
     }
 
     private double innerProduct(double[] w, int[] featureVector) {
         double sum = 0;
-        for (int i = 0; i < w.length; i++) {
-            sum += w[i] * featureVector[i];
-        }
-        return sum;
-    }
-
-    private double modInnerProduct(double[] w, int[] featureVector) {
-        double sum = 0;
+        /* Modified so we don't include the result y, just the feature vector */
         for (int i = 0; i < w.length; i++) {
             sum += w[i] * featureVector[i+1];
         }
         return sum;
-    }
-
-    private int sign(double i) {
-        if (i >= 0)
-            return 1;
-        else
-            return -1;
     }
 }

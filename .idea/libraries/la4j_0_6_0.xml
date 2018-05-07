@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="libsvmwrapper (2)">
+  <library name="la4j-0.6.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.idea/libraries/libsvmwrapper.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/la4j-0.6.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

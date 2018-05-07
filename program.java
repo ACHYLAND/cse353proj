@@ -1,20 +1,21 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class program {
     public static void main(String [] args) {
         Scanner scan = new Scanner(System.in);
         double[] weightVector = null; // the weightVector for perceptron
-        Perceptron p = new Perceptron(); // Perceptron
+        Perceptron p = new Perceptron(); //Perceptron for
         linearRegression l = new linearRegression();
-        SVM s = new SVM();
         ArrayList<int[]> vectors; //ArrayList of the input files
 
         System.out.println("Type 'p' to use the perceptron classifier or 'l' to use " +
-                "the linear regression model, or 's' to use SVM");
+                "the linear regression model");
         String model = scan.next();
-        if (!("p".equals(model)||"l".equals(model)||"s".equals(model))) {
-            System.out.println("Unknown learning model.");
+        if (!("p".equals(model)||"l".equals(model)))
+        {
+            System.out.println("Unknown learning model");
             return;
         }
 
@@ -47,14 +48,8 @@ public class program {
                     weightVector = l.linearRegressionTrainingAlgorithm(vectors);
                     System.out.print("The output line has coefficients of: [");
                 }
-                else if ("s".equals(model)) {
-                    System.out.println("Training the SVM model...");
-                    s.trainSVM(filename);
-                }
-                if (weightVector != null) {
-                    for (double i : weightVector) {
-                        System.out.print(i + " ");
-                    }
+                for (double i : weightVector) {
+                    System.out.print(i + " ");
                 }
                 System.out.print("]");
                 System.out.println();
