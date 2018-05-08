@@ -9,7 +9,7 @@ public class program {
         double[] weightVector = null; // the weightVector for perceptron
         Perceptron p = new Perceptron(); //Perceptron for
         linearRegression l = new linearRegression();
-        ArrayList<double[]> vectors; //ArrayList of the input files
+        ArrayList<int[]> vectors; //ArrayList of the input files
 
         System.out.println("Type 'p' to use the perceptron classifier or 'l' to use " +
                 "the linear regression model");
