@@ -6,19 +6,19 @@ import java.util.Vector;
 
 class CSVReader {
 
-    ArrayList<int[]> read(String filename) {
+    ArrayList<double[]> read(String filename) {
             BufferedReader br;
             String line;
             final String COMMA_DELIMITER = ",";
 
             try {
                 br = new BufferedReader(new FileReader(filename));
-                ArrayList<int[]> vectors = new ArrayList<int[]>();
+                ArrayList<double[]> vectors = new ArrayList<>();
 
                 int j = 0;
                 while ((line = br.readLine()) != null) {
                     String[] fvs = line.split(COMMA_DELIMITER);
-                    int[] featureVector = new int[fvs.length];
+                    double[] featureVector = new double[fvs.length];
 
                     for (int i = 0; i < fvs.length; i++) {
                         featureVector[i] = Integer.parseInt(fvs[i]);

@@ -1,4 +1,4 @@
-package la4j.src;
+/*package la4j.src;
 
 public class test {
 
@@ -9,3 +9,4 @@ public class test {
         matrix.printMatrix(matrix.matrixMultiplication(a,a));
     }
 }
+*/

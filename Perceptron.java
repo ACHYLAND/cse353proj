@@ -5,12 +5,12 @@ class Perceptron {
     final double BIAS = 5;
 
     //implement the perceptron algorithm
-    double[] perceptronTrainingAlgorithm(ArrayList<int[]> trainingSample) {
+    double[] perceptronTrainingAlgorithm(ArrayList<double[]> trainingSample) {
         System.out.println("Training sample size is " + trainingSample.size());
 
         /* Initialize w to 0 */
         double[] w = new double[trainingSample.get(1).length - 1]; // weight vector
-        int[] y = new int[trainingSample.size()]; // vector of results y_i
+        double[] y = new double[trainingSample.size()]; // vector of results y_i
 
         for (int i = 0; i < y.length; i++) {
             y[i] = trainingSample.get(i)[0];
@@ -35,7 +35,7 @@ class Perceptron {
 
 
 
-    double perceptronTestingAlgorithm(ArrayList<int[]> testingSample, double[]weightVector) {
+    double perceptronTestingAlgorithm(ArrayList<double[]> testingSample, double[]weightVector) {
         int correctOutput = 0;
         int totalIterations = testingSample.size();
         double result = 0;
@@ -43,7 +43,7 @@ class Perceptron {
         // of the testing sample to something?
         for(int i = 0; i < testingSample.size(); i++){
             //checks if the output is correct
-            int [] temp = testingSample.get(i);
+            double[] temp = testingSample.get(i);
             if ((innerProduct(weightVector, temp) > 0 &&temp[0] > 0)
                     || (innerProduct(weightVector, temp) < 0 &&temp[0] < 0)){
                 correctOutput++;
@@ -54,7 +54,7 @@ class Perceptron {
         return result;
     }
 
-    private double innerProduct(double[] w, int[] featureVector) {
+    private double innerProduct(double[] w, double[] featureVector) {
         double sum = 0;
         /* Modified so we don't include the result y, just the feature vector */
         for (int i = 0; i < w.length; i++) {

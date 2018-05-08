@@ -12,45 +12,54 @@ import org.la4j.vector.dense.BasicVector;
 public class linearRegression {
     //implement the linearRegression algorithm
     public double[] linearRegressionTrainingAlgorithm(ArrayList<double[]> trainingSample) {
-        // Calculate A
-        double[][] trainingSampleArrayTemp = trainingSample.toArray(new double[trainingSample.size()][trainingSample.get(0).length]);
-        double[][] trainingSampleArray = new double[trainingSampleArrayTemp.length][trainingSampleArrayTemp[0].length-1];
-        // trainingSampleArray contains ONLY the feature vectors; no class labels
-        for (int i = 0; i < trainingSampleArray.length; i++) {
-            System.arraycopy(trainingSampleArrayTemp[i], 1, trainingSampleArray[i], 0, trainingSampleArray[i].length);
-        }
+        double[] w;
+        BasicVector wTotal = new BasicVector(trainingSample.get(0).length-1);
+        BasicVector wVector = new BasicVector(trainingSample.get(0).length-1);
+        for (int j = 0; j < trainingSample.size(); j += 100) {
+            // Calculate A
+            double[][] trainingSampleArrayTemp = trainingSample.toArray(new double[100][trainingSample.get(0).length]);
+            double[][] trainingSampleArray = new double[100][trainingSampleArrayTemp[0].length - 1];
+            // trainingSampleArray contains ONLY the feature vectors; no class labels
+            for (int i = j; i < j + 100; i++) {
+                System.arraycopy(trainingSampleArrayTemp[i], 1, trainingSampleArray[i], 0, trainingSampleArray[i].length);
+            }
 
-        Matrix A = new Basic2DMatrix(trainingSampleArray.length, trainingSampleArray.length);
-        for (int i = 0; i < trainingSampleArray.length; i++) {
+            Matrix A = new Basic2DMatrix(trainingSampleArray[0].length, trainingSampleArray[0].length);
+            for (int i = j; i < j + 100; i++) {
+                Basic2DMatrix xi;
+                xi = Basic2DMatrix.from1DArray(1, trainingSampleArray[0].length, trainingSampleArray[i]);
+                Basic2DMatrix xiT = (Basic2DMatrix) xi.transpose();
+                A.add(xiT.multiply(xi));
+            }
+
+            // Calculate b
+            double[] bArray = new double[trainingSampleArray[0].length];
+            Basic1DMatrix b = new Basic1DMatrix(1, trainingSampleArray[0].length, bArray);
             Basic2DMatrix xi;
-            xi = Basic2DMatrix.from1DArray(1, trainingSampleArray[0].length, trainingSampleArray[i]);
-            Basic2DMatrix xiT = (Basic2DMatrix) xi.transpose();
-            A.add(xi.multiply(xiT));
-        }
 
-        // Calculate b
-        double[] bArray = new double[trainingSampleArray[0].length];
-        Basic1DMatrix b = new Basic1DMatrix(1, trainingSampleArray[0].length, bArray);
-        Basic2DMatrix xi;
+            // b = sum{i = 1; n} xi * yi
+            for (int i = j; i < j + 100; i++) {
+                xi = Basic2DMatrix.from1DArray(1, trainingSampleArray[0].length, trainingSampleArray[i]);
+                b.add(xi.multiply(trainingSample.get(i)[0]));
+            }
 
-        // b = sum{i = 1; n} xi * yi
-        for (int i = 0; i < bArray.length; i++) {
-            xi = Basic2DMatrix.from1DArray(1, trainingSampleArray[0].length, trainingSampleArray[i]);
-            b.add(xi.multiply(trainingSample.get(i)[0]));
-        }
-
-        Basic1DMatrix w;
-        double[] wArray;
-        GaussJordanInverter inverter = new GaussJordanInverter(A);
-        Basic2DMatrix Ainv;
+            //Basic1DMatrix wans;
+            double[] wArray;
+            GaussJordanInverter inverter = new GaussJordanInverter(A);
+            Basic2DMatrix Ainv;
         /*if ((Ainv = (Basic2DMatrix)inverter.inverse()) != null) {
             //w = (Basic1DMatrix) Ainv.multiply(b);
             //wArray = w.toArray();
         }*/
-        LeastSquaresSolver solver = new LeastSquaresSolver(A);
-        BasicVector bVector = (BasicVector) b.toRowVector();
-        BasicVector wVector = (BasicVector) solver.solve(bVector);
-        wArray = wVector.toArray();
+            LeastSquaresSolver solver = new LeastSquaresSolver(A);
+            BasicVector bVector = (BasicVector) b.toRowVector();
+            wVector = (BasicVector) solver.solve(bVector);
+            wArray = wVector.toArray();
+            wTotal.add(wVector);
+        }
+
+        wVector.divide(trainingSample.size());
+        w= wVector.toArray();
 
         /*
         //let the initial hypothesis be the average the value of each point
@@ -86,7 +95,7 @@ public class linearRegression {
             errorPercentDifference = Math.abs(((double)lastError - error[0])/((double)error[0]));
             lastError = error[0];
         }*/
-        return wArray;
+        return w;
     }
 
     //each iteration of finding the squared error of the hypothesis

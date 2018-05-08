@@ -1,53 +1,28 @@
-package la4j.src;
-
+import org.la4j.inversion.GaussJordanInverter;
 import org.la4j.Matrices;
 import org.la4j.Matrix;
 import org.la4j.matrix.dense.Basic2DMatrix;
 
 public class matrixManipulation {
-    public double [][] matrixMultiplication(double[][] a, double[][]b)
-    {
-        double[][] product = new double[a.length][b.length];
-        double tempSum;
-        for (int i = 0; i<product.length;i++)
-        {
-
-            for(int j = 0; j<product[0].length;j++){
-                tempSum = 0;
-
-                for(int k = 0; k <a[0].length;k++){
-                    tempSum += a[i][k] * b[k][j];
-                }
-                product[i][j] = tempSum;
-            }
-        }
-        return product;
+    public Matrix matrixMultiplication(double[][] a, double[][] b) {
+        Basic2DMatrix matA = new Basic2DMatrix(a.length, a[0].length);
+        Basic2DMatrix matB = new Basic2DMatrix(b.length, b[0].length);
+        return matA.multiply(matB);
     }
 
-    public double [][] matrixInverse (double[][] a)
-    {
-        double[][]inverse = new double [a[0].length][a.length];
+    public Matrix matrixInverse (double[][] a) {
         Matrix c = new Basic2DMatrix(a);
-
-        Matrix b = c.withInverter(Matrices.DEFAULT_INVERTOR);
+        GaussJordanInverter inverter = new GaussJordanInverter(c);
+        Matrix inverse = inverter.inverse();
         return inverse;
     }
 
-    public double [][] matrixTranspose(double[][] a)
-    {
-        double [][] transpose = new double[a[0].length][a.length];
-        for (int i = 0; i< a.length; i++)
-        {
-            for(int j = 0; j < a[0].length; j++)
-            {
-                transpose[j][i] = a[i][j];
-            }
-        }
-        return transpose;
+    public Matrix matrixTranspose(double[][] a) {
+        Matrix matA = new Basic2DMatrix(a);
+        return matA.transpose();
     }
 
-    public void printMatrix(double[][]a)
-    {
+    public void printMatrix(double[][] a) {
         for (int i = 0; i< a.length; i++)
         {
             for(int j = 0; j < a[0].length; j++)
